@@ -101,5 +101,37 @@ class ShortUrlControllerTest {
                         .content(objectMapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @DisplayName("Original Url 조회 API 테스트 - 정상 요청")
+    void getOriginalUrlTest() throws Exception {
+        // Given
+        String oriUrl = "https://www.example.com";
+        String shortUrl = "a1B2c3D4";
+
+        // Stub
+        BDDMockito.given(shortUrlService.getOriUrl(any())).willReturn(oriUrl);
+
+        //When & Then
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/urls/" + shortUrl)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(oriUrl));
+    }
+
+    @Test
+    @DisplayName("Original Url 조회 API 테스트 - 빈 값 요청")
+    void getOriginalUrlTest_BadRequest_Empty() throws Exception {
+        // Given
+        String oriUrl = "https://www.example.com";
+        String shortUrl = "";
+
+        //When & Then
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/urls/" + shortUrl)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isMethodNotAllowed());
+    }
 }
 
