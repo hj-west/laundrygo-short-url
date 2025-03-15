@@ -24,6 +24,7 @@ public class ShortUrl {
     private String shortUrl;
 
     @Column(name = "CREATED_AT", nullable = false)
+    @Builder.Default
     private LocalDateTime createdAt = LocalDateTime.now();
 }
 

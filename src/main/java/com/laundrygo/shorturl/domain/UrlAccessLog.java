@@ -21,5 +21,6 @@ public class UrlAccessLog {
     private String shortUrl;
 
     @Column(name = "ACCESS_AT", nullable = false)
+    @Builder.Default
     private LocalDateTime accessAt = LocalDateTime.now();
 }
