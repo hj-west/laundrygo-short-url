@@ -17,7 +17,7 @@ public class UrlAccessLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "SHORT_URL", nullable = false, length = 8, unique = true)
+    @Column(name = "SHORT_URL", nullable = false, length = 8)
     private String shortUrl;
 
     @Column(name = "ACCESS_AT", nullable = false)
