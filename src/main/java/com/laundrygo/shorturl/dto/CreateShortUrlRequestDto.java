@@ -1,12 +1,13 @@
 package com.laundrygo.shorturl.dto;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
 public class CreateShortUrlRequestDto {
-    @NotNull
+    @NotBlank
     private String oriUrl;
 }
