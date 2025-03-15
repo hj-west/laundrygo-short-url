@@ -26,4 +26,18 @@ public class ShortUrlController {
 
         return new CreateShortUrlResponseDto(oriUrl, shortUrl);
     }
+
+    /**
+     * 단축 URL을 받아 원본 URL을 반환
+     * @param shortUrl 단축 url
+     * @return oriUrl 원본 url
+     */
+    @GetMapping("/{shortUrl}")
+    public String getOriginUrl(@PathVariable String shortUrl) {
+        try {
+            return shortUrlService.getOriUrl(shortUrl);
+        } catch (RuntimeException e) {
+            return e.getMessage();
+        }
+    }
 }

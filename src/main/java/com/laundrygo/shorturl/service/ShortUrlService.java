@@ -48,6 +48,15 @@ public class ShortUrlService {
     }
 
     /**
+     * ShortUrl을 가지고 OriUrl을 조회.
+     * 찾을 수 없을 시 RuntimeException throw
+     */
+    public String getOriUrl(String shortUrl) {
+        return shortUrlRepository.findByShortUrl(shortUrl).orElseThrow(() -> new RuntimeException("Not Found Ori Url. request short url - " + shortUrl)).getOriUrl();
+    }
+
+
+    /**
      * ShortUrl 생성하기.
      * 랜덤 방식을 사용한 이유는 중복값이 생성될 경우 반복실행하여 다른 랜덤값을 생성하기 위함.
      * SHA-256 등의 해시 방식을 사용하면 중복이 발생해도 반복실행이 불가능.(같은 oriUrl이면 같은 값 return하기 때문에 추가 가공과정이 필요)
