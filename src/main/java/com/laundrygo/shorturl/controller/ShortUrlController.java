@@ -3,6 +3,7 @@ package com.laundrygo.shorturl.controller;
 import com.laundrygo.shorturl.dto.CreateShortUrlRequestDto;
 import com.laundrygo.shorturl.dto.CreateShortUrlResponseDto;
 import com.laundrygo.shorturl.service.ShortUrlService;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,7 @@ public class ShortUrlController {
     public String getOriginUrl(@PathVariable String shortUrl) {
         try {
             return shortUrlService.getOriUrl(shortUrl);
-        } catch (RuntimeException e) {
+        } catch (NotFoundException e) {
             return e.getMessage();
         }
     }

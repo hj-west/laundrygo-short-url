@@ -2,9 +2,12 @@ package com.laundrygo.shorturl.service;
 
 import com.laundrygo.shorturl.domain.ShortUrl;
 import com.laundrygo.shorturl.repository.ShortUrlRepository;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -51,8 +54,8 @@ public class ShortUrlService {
      * ShortUrl을 가지고 OriUrl을 조회.
      * 찾을 수 없을 시 RuntimeException throw
      */
-    public String getOriUrl(String shortUrl) {
-        return shortUrlRepository.findByShortUrl(shortUrl).orElseThrow(() -> new RuntimeException("Not Found Ori Url. request short url - " + shortUrl)).getOriUrl();
+    public String getOriUrl(String shortUrl) throws NotFoundException {
+        return shortUrlRepository.findByShortUrl(shortUrl).orElseThrow(() -> new NotFoundException("Not Found Ori Url. request short url - " + shortUrl)).getOriUrl();
     }
 
 
