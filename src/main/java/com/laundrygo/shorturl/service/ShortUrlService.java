@@ -1,7 +1,9 @@
 package com.laundrygo.shorturl.service;
 
 import com.laundrygo.shorturl.domain.ShortUrl;
+import com.laundrygo.shorturl.domain.UrlAccessLog;
 import com.laundrygo.shorturl.repository.ShortUrlRepository;
+import com.laundrygo.shorturl.repository.UrlAccessLogRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class ShortUrlService {
     private final ShortUrlRepository shortUrlRepository;
+    private final UrlAccessLogRepository urlAccessLogRepository;
 
     /**
      * ShortUrl을 생성하는 매서드.
@@ -54,8 +57,13 @@ public class ShortUrlService {
      * ShortUrl을 가지고 OriUrl을 조회.
      * 찾을 수 없을 시 RuntimeException throw
      */
+    @Transactional
     public String getOriUrl(String shortUrl) throws NotFoundException {
-        return shortUrlRepository.findByShortUrl(shortUrl).orElseThrow(() -> new NotFoundException("Not Found Ori Url. request short url - " + shortUrl)).getOriUrl();
+        String oriUrl = shortUrlRepository.findByShortUrl(shortUrl).orElseThrow(() -> new NotFoundException("Not Found Ori Url. request short url - " + shortUrl)).getOriUrl();
+
+        recodeAccessShortUrl(shortUrl);
+
+        return oriUrl;
     }
 
 
@@ -72,6 +80,15 @@ public class ShortUrlService {
             shortUrl.append(chars.charAt(random.nextInt(chars.length())));
         }
         return shortUrl.toString();
+    }
+
+    /**
+     * UrlAccessLog 저장 메서드
+     *  */
+    private void recodeAccessShortUrl(String shortUrl) {
+        urlAccessLogRepository.save(UrlAccessLog.builder()
+                        .shortUrl(shortUrl)
+                .build());
     }
 }
 
