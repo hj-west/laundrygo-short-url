@@ -49,6 +49,20 @@ public class ShortUrlController {
     }
 
     /**
+     * 원본 URL을 받아 단축 URL을 반환
+     * @param oriUrl 원본 url
+     * @return shortUrl 단축 url
+     */
+    @GetMapping("/originalUrls/{oriUrl}")
+    public String getShortUrl(@PathVariable String oriUrl) {
+        try {
+            return shortUrlService.getOriUrl(oriUrl);
+        } catch (NotFoundException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
      * 단축 URL을 받아 24시간 이내 시간별 접속수를 나타냄
      * @param shortUrl 단축 url
      * @return Map<String, String>

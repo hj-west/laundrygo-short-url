@@ -54,7 +54,7 @@ public class ShortUrlService {
 
     /**
      * ShortUrl을 가지고 OriUrl을 조회.
-     * 찾을 수 없을 시 RuntimeException throw
+     * 찾을 수 없을 시 NotFoundException throw
      */
     @Transactional
     public String getOriUrl(String shortUrl) throws NotFoundException {
@@ -63,6 +63,16 @@ public class ShortUrlService {
         recodeAccessShortUrl(shortUrl);
 
         return oriUrl;
+    }
+
+    /**
+     * OriUrl을 가지고 ShortUrl을 조회.
+     * 찾을 수 없을 시 NotFoundException throw
+     */
+    @Transactional
+    public String getShortUrl(String oriUrl) throws NotFoundException {
+
+        return shortUrlRepository.findByShortUrl(oriUrl).orElseThrow(() -> new NotFoundException("Not Found Short Url. request ori url - " + oriUrl)).getShortUrl();
     }
 
     /**
