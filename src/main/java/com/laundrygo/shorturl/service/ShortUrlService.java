@@ -6,12 +6,11 @@ import com.laundrygo.shorturl.repository.ShortUrlRepository;
 import com.laundrygo.shorturl.repository.UrlAccessLogRepository;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -64,6 +63,14 @@ public class ShortUrlService {
         recodeAccessShortUrl(shortUrl);
 
         return oriUrl;
+    }
+
+    /**
+     * 24시간 전을 기준으로 UrlAccessLog를 가져오는 메서드
+     */
+    public List<UrlAccessLog> getAccessCount(String shortUrl) {
+        LocalDateTime date = LocalDateTime.now().minusHours(24);
+        return urlAccessLogRepository.findByShortUrlAndAccessAtAfter(shortUrl, date);
     }
 
 
